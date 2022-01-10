@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>2020261020 장세림</title>
+<title>장세림</title>
 </head>
 <body>
 
