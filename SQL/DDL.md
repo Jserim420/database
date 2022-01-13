@@ -91,7 +91,7 @@ CREATE TALBE subStationTK
     ```
 - 테이블 내 데이터 제거
     ```sql
-    truncate table subwayStationTK2;
+    truncate table subStationTK2;
     -- 데이블 객체는 그대로 두고 내부의 데이터만 영구적으로 제거
     ```
 - 테이블 제거
