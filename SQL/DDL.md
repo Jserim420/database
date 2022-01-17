@@ -13,7 +13,7 @@
 
 <br>
 
-## 2. CREATE
+## 2. ```CREATE```
 ```sql
 CREATE TABLE tableName();
 -- tableName을 이름으로 하는 새로운 테이블 생성
@@ -37,7 +37,7 @@ CREATE TALBE subStationTK
 
 <BR>
 
- ## 3. ALTER
+ ## 3. ```ALTER```
 - ```ALTER```는 칼럼 및 제약조건을 추가/수정/제거하는 데 이용한다.
 
 - 칼럼추가
