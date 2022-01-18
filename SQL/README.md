@@ -13,3 +13,4 @@
     1. DDL(데이터 정의어) : CREATE, ALTER, DROP, RENAME
     2. DML(데이터 조작어) : SELECT, INSERT, UPDATE, DELETE
     3. TCL(트랜잭션 제어어) : COMMIT, ROLLBACK
+    4. WHERE(필터처리)와 연산자
