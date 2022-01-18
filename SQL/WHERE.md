@@ -8,7 +8,7 @@ WHERE clientAdd LIKE '%경기도%';
 ```
 은행고객(bankClient) 테이블에서 고객의 주소(clientAdd) 칼럼의 값이 '경기도'라는 단어를 포함하는 행을 출력
 
-- ```SELECT```문 사용 시 사용자들은 원하는 자료만 검색하기 위해 WHERE절을 이요하여 출력 데이터의 행을 제한한다.
+- ```SELECT```문 사용 시 사용자들은 원하는 자료만 검색하기 위해 ```WHERE```절을 이용하여 출력 데이터의 행을 제한한다.
 <BR><BR><BR>
 
 # 연산자
@@ -74,7 +74,7 @@ WHERE clientAdd LIKE '%경기도%';
 
 - <U>(2) ```IS NULL``` 연산</U>
     - 칼럼이 ```NULL```인 행을 조회하는 SQL문
-    - 특정 칼럼의 값이 NULL인 데이터를 추출할 경우 IS NULL 연산자를 사용
+    - 특정 칼럼의 값이 ```NULL```인 데이터를 추출할 경우 ```IS NULL``` 연산자를 사용
         ```SQL
         SELECT B.clientNo, B.clientName, B.clientAdd
         FROM bankClient B
