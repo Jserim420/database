@@ -110,7 +110,7 @@ WHERE B.branchAdd LIKE '경기도%'
 AND
 (
     B.bankName LIKE '%국민은행%'
-    OR B.bankName LIKE '%신한은행%'
+    B.bankName LIKE '%신한은행%'
 )
 AND NOT B.branchAdd LIKE '%하남시%'
 ```
