@@ -149,4 +149,127 @@ AND NOT B.branchAdd LIKE '%하남시%'
     |NOT BETWEEN A AND B| A와 B의 값 사이에 있지 않다.
     |NOT IN(LIST)| LIST를 포함하지 않는다.
     |IS NOT NULL| NULL 값이 아니다.
+
+<br>
+
+# 문자열 비교
+
+## ```CHAR``` VS ```VARCHAR2```
+- CHAR : 고정 길이 문자열
+- VARCHAR2 : 가변 길이 문자열
+
+<BR>
+
+## 1. 양쪽이 모두 CHAR 타입인 경우
+- 길이가 서로 다르면 작은 쪽에 공백을 추가하여 길이를 같게 한다.
+- 서로 다른 문자가 나올 때까지 비교한다.
+- 달라진 첫 번째 값에 따라 크기를 결정
+- 공백의 수만 다르다면 같은 값으로 결정
+```SQL
+CREATE TABLE tableChar( 
+    charNo char(4), char4 char(4), char5 char(5),
+    CONSTRAINT PK_tableChar PRIMARY KEY(charNo) 
+);
+
+INSERT INTO tableChar(charNo, char4, char5) 
+VALUES ('0001', 'SQLD', 'SQLD ');
+
+INSERT INTO tableChar(charNp, char4, char5)
+VALUES ('0002', 'SQLP', 'SQLP');
+```
+```SQL
+SELECT 
+REPLACE(char4, ' ', '_') AS char4,
+REPLACE(char5, ' ', '_') AS char5
+FROM tableChar
+```
+>결과
+```
+char4 | char5 |
+---------------
+SQLD  | SQLD_ |
+SQLP  | SQLP_ |
+```
+CHAR(5)에 4개의 문자열만 저장하면 나머지의 자리가 공백으로 채워진다.
+
+<br>
+
+- ```CHAR```형 데이터 간 비교
+    ```SQL
+    SELECT charNo, REPLACE(char4, ' ','_') AS char4,
+    REPLACE(char5, ' ','_') AS char5,
+    FROM tableChar
+    WHERE char4=SQLD AND char4=char5;
+    ```
+    >결과
+    ```
+    charNo | char4 | char5 |
+    ------------------------
+    0001   | SQLD  | SQLD_ |
+    ```
+    - **CHAR 데이터 칼럼끼리 비교할 때 길이가 서로 달라도 공백만 다르다면 같다고 판단**
+    - **데이터 뒤에 있는 공백은 결과집합에 영향을 주지 않는다.**
+
+## 2. 한쪽이 ```VARCHAR2```인 경우
+- 서로 다른 문자가 나올 때까지 비교
+- 길이가 다르면 짧은 것이 끝날 때 까지만 비교한 후 길이가 긴 것이 크다고 판단
+- 길이가 같고 다른 것이 없다면 같다고 판단
+- ```VARCHAR2```는 공백도 문자로 판단
+```SQL
+CREATE TABLE tbVarChar2 (
+    varCharNo char(4), char4 char(4), varChar2_5 varchar2(5),
+    CONSTRAINT PK_tbVarChar2 PRIMARY KEY(varCharNo)
+);
+
+INSERT INTO tbVarChar2(varCharNo, char4, varChar2_5) 
+VALUES ('0001', 'SQLD', 'SQLD ');
+INSERT INTO tbVarChar2(varCharNo, char4, varChar2_5)
+VALUES ('0002', 'SQLP', 'SQLP ');
+```
+```SQL
+SELECT REPLACE (char4, ' ', '_') AS char4,
+REPLACE (varChar2_5, ' ', '_') AS varCahr2_5
+FROM tbVarChar2;
+```
+> 결과
+```
+char4 | varChar2_5 |
+--------------------
+SQLD  | SQLD_      |
+SQLP  | SQLP_      |
+```
+
+- ```CHAR```형과 ```VARCHAR2``` 타입 비교
+    - ```CHAR```과 ```VARCHAR2``` 타입 비교 시, ```VARCHAR2```는 공백도 문자로 판단하기 때문에 서로 다른 문자라고 판단한다.
+    - ```TRIM```함수를 이용해 문자열을 비교한다.
+    ```SQL
+    SELECT varCharNo, REPLACE(char4, ' ','_') AS char4,
+    REPLACE(varChar2_5, ' ','_') AS varChar2_5,
+    FROM tbVarChar2
+    WHERE varCharNo='0001' AND char4 = TRIM(varChar2_5);
+    ```
+    > 결과
+    ```
+    charNo | char4 | char5 |
+    ------------------------
+    0001   | SQLD  | SQLD_ |
+    ```
+
+## 3. 상수 값과 비교
+- 상수 쪽을 칼럼의 데이터형과 동일하게 바꾸고 비교
+- 칼럼이 ```CHAR```이면 ```CHAR``` 타입인 경우를 적용(공백은 문자로 판단 X)
+- 칼럼이 ```VARCHAR2```이면 ```VARCHAR2``` 타입인 경우를 적용(공백도 문자로 판단)
     
+<BR>
+
+# ```ROWNUM```
+- 특정 테이블에서 데이터가 조회될 때 출력되는 행의 순번을 의미하는 Pseudo 칼럼
+- 모든 데이터를 출력할 필요가 없는 경우 ```WHERE```절에서 ```ROWNUM``` 조건을 이용하여 결과 행의 건수를 제한
+
+```SQL
+SELECT 
+ROWNUM AS RNUM, A.koResident AS 주민번호, A.koName AS 이름, A.koresidence AS 거주지
+FROM koPopulation A
+WHERE ROWNUM <= 10;
+```
+**10개의 행만 출력된다.**
