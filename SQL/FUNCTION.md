@@ -74,6 +74,7 @@ TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS'), -- 날짜형을 문자형으로 변�
 TO_CHAR(10.25, '$999999999.99'), -- 숫자형을 문자형으로 변환
 TO_NUMBER('100')+TO_NUMBER('100'), -- 문자형을 숫자형으로 변환
 TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD'), 'YYYYMMDD') -- 날짜형을 문자형으로 변환 후 다시 날짜형으로 변환
+FROM DUAL;
 ```
 
 <BR>
@@ -89,4 +90,5 @@ NVL(koResidence, '서울시'), -- 해당 칼럼이 NULL이면 '서울시'로 출
 NULLIF('SQL','SQL'), -- 두 문자열이 같다면 NULL 출력
 NULLIF('SQL','SQLD'), -- 두 문자열이 다르면 첫 번째 문자열 출력
 COALESCE(NULL, 'SQL', 'SQLD') -- NULL이 아닌 첫 번째 인자 출력
+FROM DUAL;
 ```
