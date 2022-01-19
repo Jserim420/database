@@ -109,7 +109,7 @@ FROM bankBranch B
 WHERE B.branchAdd LIKE '경기도%'
 AND
 (
-    B.bankName LIKE '%국민은행%',
+    B.bankName LIKE '%국민은행%'
     B.bankName LIKE '%신한은행%'
 )
 AND NOT B.branchAdd LIKE '%하남시%'
@@ -149,6 +149,7 @@ AND NOT B.branchAdd LIKE '%하남시%'
     |NOT BETWEEN A AND B| A와 B의 값 사이에 있지 않다.
     |NOT IN(LIST)| LIST를 포함하지 않는다.
     |IS NOT NULL| NULL 값이 아니다.
+<<<<<<< HEAD
 
 <br>
 
@@ -273,3 +274,6 @@ FROM koPopulation A
 WHERE ROWNUM <= 10;
 ```
 **10개의 행만 출력된다.**
+=======
+    
+>>>>>>> 33346d45d040ec8820adf8a019c4ef2e2fbc423e
