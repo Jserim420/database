@@ -92,3 +92,4 @@ NULLIF('SQL','SQLD'), -- 두 문자열이 다르면 첫 번째 문자열 출력
 COALESCE(NULL, 'SQL', 'SQLD') -- NULL이 아닌 첫 번째 인자 출력
 FROM DUAL;
 ```
+```NVL```함수 : 첫 번째 인자로 들어오는 값 혹은 표현식이 NULL인 경우 두 번째 인자의 값이나 표현식을 리턴해주는 함수
