@@ -14,3 +14,6 @@
     2. DML(데이터 조작어) : SELECT, INSERT, UPDATE, DELETE
     3. TCL(트랜잭션 제어어) : COMMIT, ROLLBACK
     4. WHERE(필터처리)와 연산자
+    5. FUNCTION(함수)
+    6. GROUP BY, HAVING
+    7. ORDER BY
