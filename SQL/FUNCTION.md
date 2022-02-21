@@ -126,3 +126,161 @@ FROM DUAL;
     NULL이 포함되어 있는 데이터에서
     COUNT(*) 과 COUNT(NUM)은 다르다.
     ```
+
+<BR><BR>
+
+# 그룹함수
+- 특정 집합의 소계/중계/합계/총합계를 구할 때 사용
+
+```해당 예시는 https://androphil.tistory.com/166 [소림사의 홍반장!] 를 참고했습니다.```
+
+## ```ROLLUP```
+- 소그룹 간의 소계 계산
+- ```ROLLUP``` 함수 내에 인자로 지정된 그룹화 칼럼은 소계를 생성하는 데 사용
+- 그룹화 칼럼의 수가 N이라고 했을 때 N+1의 소계 생성
+- ```ROLLUP``` 함수 내의 인자 순서가 바뀌면 결과도 바뀜(```ROLLUP```은 계층 구조)
+
+- ***예시 1*** : 직업별로 급여 합계와 총계를 구하기
+    ```SQL
+    SELECT job, SUM(sal) 
+    FROM emp 
+    GROUP BY ROLLUP(job);
+    ```
+    > 결과
+    ```
+    JOB        | SUM(SAL) 
+    ---------- |---------- 
+    ANALYST    | 6000 
+    CLERK      | 3200 
+    MANAGER    | 33925 
+    PRESIDENT  | 5000 
+    SALESMAN   | 4000
+               | 52125
+    ```
+
+- ***예시 2*** : 부서 별 급여 합계와 전체 사원 수 및 전체 급여 합계와 전체 사원 수 구하기
+    ```SQL
+    SELECT b.dname, a.job, SUM(a.sal) sal, COUNT(a.empno) emp_count 
+    FROM emp a, dept b 
+    WHERE a.deptno = b.deptno 
+    GROUP BY ROLLUP(b.dname, a.job)
+    ```
+    > 결과
+    ```
+    DNAME      | JOB        | SAL        | EMP_COUNT 
+    ---------- | ---------- | ---------- | ---------- ACCOUNTING | CLERK      | 1300       | 1 
+    ACCOUNTING | MANAGER    | 2450       | 1 
+    ACCOUNTING | PRESIDENT  | 5000       | 1 
+    ACCOUNTING |            | 8750       | 3 
+    -- ACCOUNTING 부서의 급여 합계와 전체 사원 수 
+    
+    RESEARCH   | ANALYST    | 6000       | 2 
+    RESEARCH   | CLERK      | 1900       | 2 
+    RESEARCH   | MANAGER    | 2975       | 1 
+    RESEARCH   |            | 10875      | 5 
+    -- RESEARCH 부서의 급여 합계와 전체 사원 수 
+
+    SALES      | MANAGER     | 28500     | 1
+    SALES      | SALESMAN    | 4000      | 3 
+    SALES      |             | 32500     | 4 
+    -- SALES부서의 급여 합계와 전체 사원 수
+
+               |             | 52125     | 12 
+    -- 전체 급여 합계와 전체 사원 수
+    ```
+
+<BR>
+
+## ```CUBE```
+- 인자로 기재한 칼럼에 대한 다차원 합계를 계산
+- ***예시***
+    ```SQL
+    SELECT b.dname, a.job, SUM(a.sal) sal, COUNT(a.empno) emp_count 
+    FROM emp a, dept b 
+    WHERE a.deptno = b.deptno 
+    GROUP BY CUBE(b.dname, a.job)
+    ```
+    > 결과
+    ```
+    DNAME      | JOB        | SAL        | EMP_COUNT 
+    ---------- | ---------- | ---------- | ---------- ACCOUNTING | CLERK      | 1300       | 1 
+    ACCOUNTING | MANAGER    | 2450       | 1 
+    ACCOUNTING | PRESIDENT  | 5000       | 1 
+    ACCOUNTING |            | 8750       | 3 
+    -- ACCOUNTING 부서의 직업별 급여의 총계와 사원 수 
+    
+    RESEARCH   | ANALYST    | 6000       | 2 
+    RESEARCH   | CLERK      | 1900       | 2 
+    RESEARCH   | MANAGER    | 2975       | 1 
+    RESEARCH   |            | 10875      | 5 
+    -- RESEARCH 부서의 직업별 급여의 총계와 사원 수 
+    
+    SALES      | MANAGER    | 28500      | 1 
+    SALES      | SALESMAN   | 4000       | 3 
+    SALES      |            | 32500      | 4 
+    -- SALES 부서의 직업별 급여 총계와 사원 수
+
+               | ANALYST    | 6000       | 2 
+               | CLERK      | 3200       | 3 
+               | MANAGER    | 33925      | 3 
+               | PRESIDENT  | 5000       | 1 
+               | SALESMAN   | 4000       | 3 
+               |            | 52125      | 12 
+    -- 직업별 급여의 총계와 사원 수
+    ```
+
+<BR>
+
+## ```GROUPING```
+- ```ROLLUP, CUBE```에 모두 사용 가능
+- 해당 행이 ```GROUP BY```에 의해서 산출된 행인 경우에는 0을 반환
+- ```ROLLUP```이나 ```CUBE```에 의해서 산출된 행인 경우에는 1을 반환
+- **해당 행 결과집합에 의해 산출된 데이터 인지, ```ROLLUP```이나 ```CUBE```에 의해서 산출된 데이터 인지를 알 수 있도록 지원하는 함수**
+
+<BR>
+
+## ```GROUPING SETS```
+- 합계 데이터 출력
+- ***예시1*** : 직업과 총 인원수 구하기
+    ```SQL
+    SELECT job, deptno, COUNT(*) cnt
+    FROM emp
+    GROUP BY GROUPING SETS((job,deptno), ())
+    -- 빈괄호()는 전체합계를 뜻함
+    ```
+    > 결과
+    ```
+    JOB      | DEPTNO  | CNT
+    -------- | ------- | ------
+    ANALYST  | 20      | 2
+    MANAGER  | 10      | 1
+    MANAGER  | 20      | 1
+    MANAGER  | 30      | 1
+    SALESMAN | 10      | 1
+    SALESMAN | 20      | 1
+    SALESMAN | 30      | 2
+             |         | 9
+    ```
+
+- ***예시2*** : 직업, 부서별, 총 인원수 구하기
+    ```SQL
+    SELECT job, deptno, COUNT(*) cnt
+    FROM emp
+    GROUP BY GROUPING SETS(job, (job, deptno), ()) ;
+    ```
+    > 결과
+    ```
+    JOB      | DEPTNO  | CNT
+    -------- | ------- | ------
+    ANALYST  | 20      | 2
+    ANALYST  |         | 2
+    MANAGER  | 10      | 1
+    MANAGER  | 20      | 1
+    MANAGER  | 30      | 1
+    MANAGER  |         | 3
+    SALESMAN | 10      | 1
+    SALESMAN | 20      | 1
+    SALESMAN | 30      | 2
+    SALESMAN |         | 4
+             |         | 9
+    ```
