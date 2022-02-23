@@ -23,6 +23,11 @@
         - NVL, NULLIF, COALESCE
         - 집계 함수 : COUNT, SUM, AVG, MAX, MIN, STDDEV, VARIAN
         - 그룹 함수 : ROLLUP, CUBE, GROUPING, GROUPING SETS
+        - 윈도우 함수
+            - RANK, DENSE_RANK, ROW_NUMBER
+            - SUM, MAX, MIN, AVG, COUNT
+            - FIRST_VALUE, LAST_VALUE, LAG, LEAD
+            - CUME_DIST, PERCENT_RANK, NTILE, RATIO_TO_REPORT
     6. GROUP BY, HAVING
     7. ORDER BY (정렬)
     8. JOIN
