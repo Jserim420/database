@@ -168,7 +168,8 @@ FROM DUAL;
     > 결과
     ```
     DNAME      | JOB        | SAL        | EMP_COUNT 
-    ---------- | ---------- | ---------- | ---------- ACCOUNTING | CLERK      | 1300       | 1 
+    ---------- | ---------- | ---------- | ---------- 
+    ACCOUNTING | CLERK      | 1300       | 1 
     ACCOUNTING | MANAGER    | 2450       | 1 
     ACCOUNTING | PRESIDENT  | 5000       | 1 
     ACCOUNTING |            | 8750       | 3 
@@ -203,7 +204,8 @@ FROM DUAL;
     > 결과
     ```
     DNAME      | JOB        | SAL        | EMP_COUNT 
-    ---------- | ---------- | ---------- | ---------- ACCOUNTING | CLERK      | 1300       | 1 
+    ---------- | ---------- | ---------- | ---------- 
+    ACCOUNTING | CLERK      | 1300       | 1 
     ACCOUNTING | MANAGER    | 2450       | 1 
     ACCOUNTING | PRESIDENT  | 5000       | 1 
     ACCOUNTING |            | 8750       | 3 
