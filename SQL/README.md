@@ -45,3 +45,5 @@
     11. 서브쿼리
         - EXISTS, NOT EXISTS
         - 뷰 : VIEW
+    12. DCL
+        - GRANT, REVOKE
